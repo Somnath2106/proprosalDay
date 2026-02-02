@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forever Starts Here ❤️</title>
+<style>
+    /* --- CSS STYLES --- */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* The Phone Container */
+    .phone {
+        width: 100%;
+        max-width: 380px;
+        height: 100vh;
+        max-height: 750px;
+        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    @media (min-width: 500px) {
+        .phone {
+            height: 700px;
+            border-radius: 35px;
+            border: 8px solid #fff;
+        }
+    }
+
+    /* Floating Background Hearts */
+    .bg-heart {
+        position: absolute;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 20px;
+        animation: floatUp 10s linear infinite;
+        z-index: 0;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+        50% { opacity: 1; }
+        100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+    }
+
+    /* Card Content */
+    .card {
+        background: rgba(255, 255, 255, 0.95);
+        margin: 20px;
+        padding: 25px;
+        border-radius: 25px;
+        height: calc(100% - 90px);
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: transform 0.5s ease;
+    }
+
+    h1, h2 { color: #e84393; margin-bottom: 10px; }
+    p { color: #636e72; font-size: 14px; }
+
+    /* Typing Text */
+    .caption {
+        font-weight: 600;
+        color: #d63031;
+        min-height: 50px;
+        margin-bottom: 20px;
+    }
+
+    /* Inputs */
+    .input-group {
+        width: 100%;
+        text-align: left;
+        margin-bottom: 15px;
+    }
+    label { font-size: 12px; font-weight: bold; color: #e84393; margin-left: 5px; }
+    input {
+        width: 100%;
+        padding: 12px;
+        box-sizing: border-box; /* Fixes padding width issue */
+        border-radius: 12px;
+        border: 2px solid #eee;
+        font-family: inherit;
+        outline: none;
+        transition: 0.3s;
+    }
+    input:focus { border-color: #e84393; }
+
+    /* Buttons */
+    .btn {
+        width: 100%;
+        padding: 15px;
+        border-radius: 50px;
+        border: none;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s;
+        margin-top: 10px;
+    }
+    .btn:active { transform: scale(0.95); }
+    .btn-primary { background: #e84393; color: white; box-shadow: 0 5px 15px rgba(232, 67, 147, 0.4); }
+    
+    /* Sections */
+    #proposalSection, #finalSection { display: none; }
+
+    /* Proposal Buttons */
+    .choice-container {
+        position: relative;
+        width: 100%;
+        height: 200px;
+        margin-top: 20px;
+    }
+    .btn-yes { background: #00b894; color: white; margin-bottom: 15px; animation: pulse 1.5s infinite; }
+    .btn-no { background: #ff7675; color: white; position: absolute; bottom: 0; left: 0; width: 100%; transition: 0.2s ease; }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    /* Final Gallery */
+    .gallery {
+        display: flex;
+        overflow-x: scroll;
+        gap: 10px;
+        width: 100%;
+        padding-bottom: 10px;
+        margin-top: 15px;
+    }
+    .gallery img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    /* Confetti Canvas */
+    canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 99;
+    }
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop>
+    <source src="sai_pallavi_intro.mp3" type="audio/mpeg">
+</audio>
+
+<div class="phone">
+    <div id="heartsContainer"></div>
+    
+    <canvas id="confetti"></canvas>
+
+    <div class="card">
+        
+        <div id="formSection">
+            <h1>Hey Beautiful 👋</h1>
+            <div class="caption" id="caption"></div>
+
+            <div class="input-group">
+                <label>First thought when you saw me?</label>
+                <input type="text" id="q1" placeholder="Be honest...">
+            </div>
+
+            <div class="input-group">
+                <label>One word to describe us?</label>
+                <input type="text" id="q2" placeholder="e.g. Destiny">
+            </div>
+
+            <button class="btn btn-primary" onclick="goToProposal()">Swipe Up ❤️</button>
+        </div>
+
+        <div id="proposalSection">
+            <h2>The Big Question 💍</h2>
+            <p>You are my today and all of my tomorrows.</p>
+            <br>
+            <div style="font-size: 50px;">💑</div>
+            <br>
+            <h3>Will you marry me?</h3>
+
+            <div class="choice-container">
+                <button class="btn btn-yes" onclick="sayYes()">YES, I Will! 💖</button>
+                <button class="btn btn-no" id="noBtn" onmouseover="moveNo()" ontouchstart="moveNo()">NO 😜</button>
+            </div>
+        </div>
+
+        <div id="finalSection">
+            <h1>SHE SAID YES! 🎉</h1>
+            <p>Officially the happiest day of my life.</p>
+            
+            <div class="gallery">
+                <img src="DSC_7425.JPG">
+                <img src="DSC_8711.JPG">
+                <img src="DSC_8793.JPG">
+            </div>
+
+            <p style="margin-top:20px;">Send me the good news 👇</p>
+            <button class="btn" style="background:#25D366; color:white;" onclick="sendWhatsApp()">Share on WhatsApp 💬</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    /* --- LOGIC --- */
+
+    // 1. Typing Effect
+    const text = "If you're reading this, you already know...";
+    const captionEl = document.getElementById('caption');
+    let i = 0;
+    
+    function typeWriter() {
+        if (i < text.length) {
+            captionEl.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, 50);
+        }
+    }
+    // Start typing immediately
+    typeWriter();
+
+    // 2. Background Hearts
+    function createHearts() {
+        const container = document.getElementById('heartsContainer');
+        for(let j=0; j<15; j++) {
+            let heart = document.createElement('div');
+            heart.classList.add('bg-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            container.appendChild(heart);
+        }
+    }
+    createHearts();
+
+    // 3. Transitions
+    function goToProposal() {
+        const q1 = document.getElementById('q1').value;
+        if(!q1) {
+            alert("Please answer the question first! 🥺");
+            return;
+        }
+        
+        // Start Music (Must happen after interaction)
+        document.getElementById('bgMusic').play().catch(e => console.log("Audio needs interaction"));
+
+        document.getElementById('formSection').style.display = 'none';
+        document.getElementById('proposalSection').style.display = 'block';
+    }
+
+    // 4. Runaway "No" Button
+    function moveNo() {
+        const btn = document.getElementById('noBtn');
+        const container = document.querySelector('.choice-container');
+        
+        // Calculate safe boundaries
+        const maxX = container.clientWidth - btn.clientWidth;
+        const maxY = container.clientHeight - btn.clientHeight;
+        
+        const randomX = Math.random() * maxX;
+        const randomY = Math.random() * maxY;
+        
+        btn.style.left = randomX + 'px';
+        btn.style.top = randomY + 'px';
+    }
+
+    // 5. Success Logic
+    function sayYes() {
+        document.getElementById('proposalSection').style.display = 'none';
+        document.getElementById('finalSection').style.display = 'block';
+        startConfetti();
+    }
+
+    // 6. WhatsApp Integration
+    function sendWhatsApp() {
+        const q2 = document.getElementById('q2').value || "Destiny";
+        const msg = `I said YES! 💍❤️ We are officially: ${q2}`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // 7. Confetti Effect (Physics Based)
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function startConfetti() {
+        for (let i = 0; i < 150; i++) {
+            particles.push({
+                x: canvas.width / 2,
+                y: canvas.height / 2,
+                vx: (Math.random() - 0.5) * 10,
+                vy: (Math.random() - 0.5) * 10 - 5, // Upward burst
+                color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                size: Math.random() * 5 + 2
+            });
+        }
+        animateConfetti();
+    }
+
+    function animateConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p, index) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.2; // Gravity
+            p.size *= 0.99; // Shrink
+
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (p.size < 0.5 || p.y > canvas.height) particles.splice(index, 1);
+        });
+
+        if (particles.length > 0) requestAnimationFrame(animateConfetti);
+    }
+</script>
+
+</body>
+</html>
